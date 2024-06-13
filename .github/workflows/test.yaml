@@ -14,7 +14,8 @@ jobs:
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: false
           MYSQL_ROOT_PASSWORD: password
-          MYSQL_USERNAME: root
+          MYSQL_USERNAME: testing-user
+          MYSQL_PASSWORD: password
           MYSQL_DATABASE: test
     steps:
       - name: Checkout
@@ -40,7 +41,6 @@ jobs:
       - name: Create .env
         run: |
           cp .env.ci .env
-          cp .env.ci .env.testing
 
       - name: Generate the key
         run: |
