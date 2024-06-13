@@ -13,8 +13,32 @@ jobs:
     name: Build Laravel App
     runs-on: ubuntu-latest
     steps:
-      - name: build
-        uses: ./hello/build.yml
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+
+      - name: Install dependencies
+        run: |
+          composer install
+      
+      - name: Cache the Vendor
+        uses: actions/cache@v4.0.2
+        with:
+          key: ${{ github.sha }}-php-vendor-cache
+          path: ./vendor
+
+      - name: Create .env
+        run: |
+          cp .env.ci .env
+          cp .env.ci .env.testing
+
+      - name: Generate the key
+        run: |
+          php artisan key:generate
 
   test:
     name: Test the Application
@@ -31,5 +55,39 @@ jobs:
           MYSQL_USERNAME: root
           MYSQL_DATABASE: test
     steps:
-      - name: test
-        uses: ./hello/test.yml
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+
+      - name: Restore the Cache
+        id: cache
+        uses: actions/cache@v4.0.2
+        with:
+          path: ./vendor
+          key: ${{ github.sha }}-php-vendor-cache
+
+      - name: Composer Install
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          composer install
+
+      - name: Create .env
+        run: |
+          cp .env.ci .env
+          cp .env.ci .env.testing
+
+      - name: Generate the key
+        run: |
+          php artisan key:generate
+
+      - name: Migrate the Database
+        run: |
+          php artisan migrate
+
+      - name: Run Unit Testing
+        run: |
+          php artisan test
