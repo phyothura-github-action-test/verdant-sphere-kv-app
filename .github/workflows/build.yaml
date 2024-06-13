@@ -12,13 +12,10 @@ jobs:
     name: Build Laravel App
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+      - name: Prepare Action
+        uses: ./.github/prepare-action/action.yaml
         with:
-          php-version: ${{inputs.version}}
+            version: ${{ inputs.version }}
 
       - name: Install dependencies
         run: |
