@@ -10,7 +10,35 @@ on:
 
 jobs:
   build:
-    uses: ./.github/workflows/build.yaml
+    name: Build Laravel App
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+
+      - name: Install dependencies
+        run: |
+          composer install
+      
+      - name: Cache the Vendor
+        uses: actions/cache@v4.0.2
+        with:
+          key: ${{ github.sha }}-php-vendor-cache
+          path: ./vendor
+
+      - name: Create .env
+        run: |
+          cp .env.ci .env
+          cp .env.ci .env.testing
+
+      - name: Generate the key
+        run: |
+          php artisan key:generate
 
   test:
     name: Test the Application
@@ -18,7 +46,7 @@ jobs:
     needs: [build]
     services:
       mysql:
-        image: mysql:8.0
+        image: mysql:latest
         ports:
           - 3306:3306
         env:
