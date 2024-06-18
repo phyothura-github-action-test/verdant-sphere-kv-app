@@ -16,7 +16,7 @@ jobs:
     needs: [build]
     uses: ./.github/workflow/build.yml
     with:
-      version: "8.3"
+      version: "8.2"
     
   
 
