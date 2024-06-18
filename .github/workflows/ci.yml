@@ -1,0 +1,23 @@
+name: CI Workflow
+
+# trigger
+on:
+  push:
+  pull_request:
+    branches:
+      - main
+      - dev
+
+jobs:
+  build:
+    name: build
+    uses: ./.github/workflow/build.yml
+
+    
+        
+  test:
+    name: build
+    uses: ./.github/workflow/test.yml
+    
+  
+
