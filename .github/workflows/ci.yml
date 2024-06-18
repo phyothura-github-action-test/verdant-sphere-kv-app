@@ -10,11 +10,11 @@ on:
 
 jobs:
   build:
-    name: build
+    name: "build"
     uses: ./.github/workflow/build.yml
 
   test:
-    name: build
+    name: "test"
     needs: [build]
     uses: ./.github/workflow/test.yml
     
