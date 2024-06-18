@@ -1,6 +1,5 @@
 name: Build Laravel App
 
-# trigger
 on:
   workflow_call:
     inputs:
@@ -13,29 +12,29 @@ jobs:
     name: Build Laravel App
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    - name: Setup PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: ${{ inputs.version }}
+      - name: Prepare Action
+        uses: ./.github/actions/prepare-action
+        with:
+          version: ${{ inputs.version }}
 
-    - name: Install dependencies
-      run: |
-        composer install
-        
-    - name: Cache the Vendor
-      uses: actions/cache@v4.0.2
-      with:
-        key: ${{ github.sha }}-php-vendor-cache
-        path: ./vendor
+      - name: Install dependencies
+        run: |
+          composer install
 
-    - name: Create .env
-      run: |
-        cp .env.ci .env
-        cp .env.ci .env.testing
+      - name: Cache the Vendor
+        uses: actions/cache@v4.0.2
+        with:
+          key: ${{ github.sha }}-php-vendor-cache
+          path: ./vendor
 
-    - name: Generate the key
-      run: |
-        php artisan key:generate
+      - name: Create .env
+        run: |
+          cp .env.ci .env
+          cp .env.ci .env.testing
+
+      - name: Generate the key
+        run: |
+          php artisan key:generate
