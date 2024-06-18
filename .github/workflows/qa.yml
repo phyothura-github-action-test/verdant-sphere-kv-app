@@ -1,8 +1,7 @@
 name: QA Workflow
 
 # trigger
-on:
-  workflow_dispatch
+on: workflow_dispatch
 
 jobs:
   build-version-83:
@@ -12,8 +11,7 @@ jobs:
       version: "8.3"
 
   build-version-82:
-    name: "test"
-    needs: [build]
+    name: "build"
     uses: ./.github/workflow/build.yml
     with:
       version: "8.2"
