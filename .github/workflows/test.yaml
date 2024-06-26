@@ -37,6 +37,10 @@ jobs:
         with:
           path: ./vendor
           key: ${{ github.sha }}-php-vendor-cache
+      
+      - name: Timeout
+        run: |
+          sleep 15
 
       - name: Composer Install
         if: steps.cache.outputs.cache-hit != 'true'
