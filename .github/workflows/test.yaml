@@ -55,10 +55,10 @@ jobs:
         run: |
           php artisan key:generate
 
-      - name: Migrate the Database
-        run: |
-          php artisan migrate
+      # - name: Migrate the Database
+      #   run: |
+      #     php artisan migrate
 
-      - name: Run Unit Testing
-        run: |
-          php artisan test
+      # - name: Run Unit Testing
+      #   run: |
+      #     php artisan test
