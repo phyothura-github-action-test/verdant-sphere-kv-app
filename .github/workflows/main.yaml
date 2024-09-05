@@ -32,7 +32,11 @@ jobs:
       - name: Install Dependencies
         run : |
           composer install
-          
+      
+      - name: setup Env
+        run: |
+          cp .env.ci .env
+
       - name: Build the application
         run: |
           php artisan key:generate
